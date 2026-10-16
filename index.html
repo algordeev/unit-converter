@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ConvertLab — a fast, precise unit converter for engineers. Convert length, mass, pressure, energy, and temperature instantly.">
+  <meta name="theme-color" content="#f6f7f2">
+  <title>ConvertLab — Less calculating. More creating.</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="ConvertLab home"><span class="brand-mark" aria-hidden="true">⇄</span>Convert<span>Lab</span><span class="brand-dot">®</span></a>
+    <nav aria-label="Main navigation"><a href="#converter" class="nav-current">Converter</a><a href="#pricing">Pricing</a></nav>
+    <a class="header-cta" href="#converter">Start converting <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow"><span class="status-dot"></span> BUILT FOR PRECISION. MADE FOR YOU.</div>
+      <h1 id="hero-title">Less calculating.<br>More <span class="creating">creating.<svg viewBox="0 0 320 15" aria-hidden="true"><path d="M4 10 Q140 -1 315 7 M25 14 Q170 4 286 11"/></svg></span></h1>
+      <p>The everyday unit converter for engineering minds.<br>From a quick check to your next big idea — get the numbers right.</p>
+      <div class="hero-notes"><span><i>✓</i> Instant results</span><span><i>✓</i> Engineering-grade units</span><span><i>✓</i> No sign-up needed</span></div>
+      <div class="orbit orbit-one" aria-hidden="true">mm <span>↗</span> m</div><div class="orbit orbit-two" aria-hidden="true">1 bar = 10⁵ Pa</div>
+    </section>
+    <section class="converter" id="converter" aria-labelledby="converter-heading">
+      <div class="converter-heading"><div><span class="section-kicker">YOUR EVERYDAY TOOLKIT</span><h2 id="converter-heading">Make the units work for you.</h2></div><span class="live-badge"><span class="status-dot"></span> Live conversion</span></div>
+      <div class="tabs" role="tablist" aria-label="Conversion category">
+        <button role="tab" id="tab-length" aria-controls="conversion-panel" aria-selected="true" data-category="length"><span aria-hidden="true">↔</span> Length</button>
+        <button role="tab" id="tab-mass" aria-controls="conversion-panel" aria-selected="false" tabindex="-1" data-category="mass"><span aria-hidden="true">⚖</span> Mass</button>
+        <button role="tab" id="tab-pressure" aria-controls="conversion-panel" aria-selected="false" tabindex="-1" data-category="pressure"><span aria-hidden="true">◴</span> Pressure</button>
+        <button role="tab" id="tab-energy" aria-controls="conversion-panel" aria-selected="false" tabindex="-1" data-category="energy"><span aria-hidden="true">ϟ</span> Energy</button>
+        <button role="tab" id="tab-temperature" aria-controls="conversion-panel" aria-selected="false" tabindex="-1" data-category="temperature"><span aria-hidden="true">♨</span> Temperature</button>
+      </div>
+      <div id="conversion-panel" role="tabpanel" aria-labelledby="tab-length">
+        <div class="conversion-grid">
+          <div class="value-card"><label for="input-value">FROM</label><input id="input-value" type="number" value="1" step="any" placeholder="Enter a value" inputmode="decimal"><div class="select-wrap"><select id="from-unit" aria-label="Convert from unit"></select></div></div>
+          <button class="swap" id="swap" aria-label="Swap units" title="Swap units">⇄</button>
+          <div class="value-card result-card"><span class="field-label">TO</span><output id="result" for="input-value from-unit to-unit" aria-live="polite">100</output><div class="select-wrap"><select id="to-unit" aria-label="Convert to unit"></select></div></div>
+        </div>
+        <div class="conversion-bottom"><p><span class="formula-icon" aria-hidden="true">ƒ</span><span id="formula">1 meter = 100 centimeters</span></p><button id="copy" class="copy-button"><span aria-hidden="true">▢</span> <span id="copy-label">Copy result</span></button></div>
+        <p id="input-error" class="input-error" role="status"></p>
+      </div>
+      <div class="converter-foot"><span><span aria-hidden="true">⌘</span> A little less friction in your workflow.</span><span>SI & imperial, in harmony <span aria-hidden="true">↗</span></span></div>
+    </section>
+    <div class="trust-strip"><p>Small tool. <strong>Big on the details.</strong></p><span><span aria-hidden="true">◎</span> Precision that matters</span><span><span aria-hidden="true">⌁</span> All calculations on your device</span><span><span aria-hidden="true">◇</span> Designed to stay out of your way</span></div>
+    <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="pricing-intro"><span class="section-kicker">A PLAN FOR EVERY PROJECT</span><h2 id="pricing-title">Start with curiosity.<br>Build without limits.</h2><p>Your essential conversions, always free.<br>A little more power when you need it.</p><div class="pricing-doodle" aria-hidden="true">Good ideas start here <span>⤴</span></div></div>
+      <article class="price-card"><div class="plan-heading"><h3>Student</h3><span class="plan-tag">FOR THE EVERYDAY</span></div><p class="plan-description">For learning, checking, and figuring things out.</p><div class="price">$0 <span>/ forever</span></div><ul><li>All 5 conversion categories</li><li>Instant, unlimited conversions</li><li>SI and imperial units</li><li>No account required</li></ul><a class="plan-button student-button" href="#converter">Start converting <span>↗</span></a></article>
+      <article class="price-card pro-card"><div class="plan-heading"><h3>Pro <span class="pro-spark" aria-hidden="true">✳</span></h3><span class="plan-tag">COMING SOON</span></div><p class="plan-description">More room for your engineering workflow.</p><div class="price">$8 <span>/ month, planned</span></div><ul><li>Everything in Student</li><li>Batch conversions</li><li>Saved conversion presets</li><li>Export results to CSV</li></ul><button class="plan-button pro-button" id="pro-info">Explore Pro <span>↗</span></button></article>
+    </section>
+  </main>
+  <footer><a class="brand footer-brand" href="#">Convert<span>Lab</span><span class="brand-dot">®</span></a><span>Built for the details. And the people behind them.</span><span>© <span id="year">2026</span> ConvertLab</span></footer>
+  <dialog id="pro-dialog"><button class="dialog-close" aria-label="Close dialog">×</button><span class="section-kicker">A LITTLE MORE POWER</span><h2>Pro is on the drawing board.</h2><p>Batch conversions, saved presets, and CSV exports are planned for Pro at $8/month. These features aren’t available yet.</p><p>All five conversion categories are free to use today.</p><button class="plan-button pro-button" id="back-to-converter">Keep converting <span>↗</span></button></dialog>
+</body>
+</html>
