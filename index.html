@@ -7,7 +7,10 @@
   <meta name="theme-color" content="#f6f7f2">
   <title>ConvertLab — Less calculating. More creating.</title>
   <link rel="stylesheet" href="style.css">
+  <script src="units.js" defer></script>
+  <script src="calculator.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="calculator-ui.js" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -25,6 +28,11 @@
     </section>
     <section class="converter" id="converter" aria-labelledby="converter-heading">
       <div class="converter-heading"><div><span class="section-kicker">YOUR EVERYDAY TOOLKIT</span><h2 id="converter-heading">Make the units work for you.</h2></div><span class="live-badge"><span class="status-dot"></span> Live conversion</span></div>
+      <div class="mode-switch" role="group" aria-label="Converter mode">
+        <button type="button" id="mode-convert" aria-pressed="true" aria-controls="convert-mode">↔ <span>Convert</span></button>
+        <button type="button" id="mode-calculate" aria-pressed="false" aria-controls="calculate-mode">ƒ <span>Calculate with units</span></button>
+      </div>
+      <div id="convert-mode">
       <div class="tabs" role="tablist" aria-label="Conversion category">
         <button role="tab" id="tab-length" aria-controls="conversion-panel" aria-selected="true" data-category="length"><span aria-hidden="true">↔</span> Length</button>
         <button role="tab" id="tab-mass" aria-controls="conversion-panel" aria-selected="false" tabindex="-1" data-category="mass"><span aria-hidden="true">⚖</span> Mass</button>
@@ -40,6 +48,38 @@
         </div>
         <div class="conversion-bottom"><p><span class="formula-icon" aria-hidden="true">ƒ</span><span id="formula">1 meter = 100 centimeters</span></p><button id="copy" class="copy-button"><span aria-hidden="true">▢</span> <span id="copy-label">Copy result</span></button></div>
         <p id="input-error" class="input-error" role="status"></p>
+      </div>
+      </div>
+      <div id="calculate-mode" class="calculator" hidden>
+        <form id="calculate-form" novalidate>
+          <label for="expression" class="calc-label">Expression</label>
+          <textarea id="expression" rows="2" maxlength="512" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="expression-hint calc-error" placeholder="24 V * 2 A in W"></textarea>
+          <p id="expression-hint" class="calc-hint">Combine quantities with +, −, *, / and parentheses. Add “in W” or choose an output unit below.</p>
+          <div class="example-chips" role="group" aria-label="Try an example">
+            <button type="button" data-expression="24 V * 2 A in W">Electrical power <span>↗</span></button>
+            <button type="button" data-expression="12 N*m * 1500 rpm in kW">Torque × speed <span>↗</span></button>
+            <button type="button" data-expression="100 km / 2 h in km/h">Average speed <span>↗</span></button>
+            <button type="button" data-expression="5 ft + 20 cm in m">Mixed lengths <span>↗</span></button>
+            <button type="button" data-expression="(12 V * 2 A) * 3 h in Wh">Energy <span>↗</span></button>
+            <button type="button" data-expression="10 cm * 20 cm in cm²">Area <span>↗</span></button>
+          </div>
+          <div class="calculate-actions"><div><label for="target-unit" class="calc-label">Convert result to <span>(optional)</span></label><input id="target-unit" type="text" maxlength="512" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="e.g. kW or kg*m/s²" aria-describedby="target-hint calc-error"><p id="target-hint" class="calc-hint">Use this field OR an inline “in …” / “to …” target.</p></div><button type="submit" class="calculate-button">Calculate <span aria-hidden="true">↗</span></button></div>
+          <p id="calc-error" role="alert" class="calc-error"></p>
+        </form>
+        <div class="calc-result-card"><div class="calc-result-top"><span class="calc-label">RESULT</span><button type="button" class="copy-button" id="copy-calculation" disabled>Copy result</button></div><output id="calculation-result" for="expression target-unit" aria-live="polite">Ready when you are.</output><p id="calc-result-note">Enter an expression or try an example.</p></div>
+        <details id="calculation-explanation" hidden><summary>How it works</summary><ol id="calculation-steps"></ol></details>
+        <details class="syntax-help"><summary>Syntax & supported units</summary>
+          <div class="syntax-content">
+            <p><strong>Write quantities explicitly:</strong> 5 ft + 20 cm; 12 N*m * 1500 rpm. Use * or × between quantities and / or ÷ for division. Unit products also accept ·. No functions, variables, or implicit quantity multiplication.</p>
+            <p><strong>Precedence:</strong> unit powers first, then an attached unit product (12 kg*m/s² is one quantity), quantity powers, unary signs, multiplication/division left to right, then addition/subtraction. Parentheses override order. Write 10 m / (2 s * 3 s) for a grouped denominator. Signed numbers are supported. Parenthesize a whole quantity to raise it: (2 m)^2; 2 m² means 2 square meters. For example, −2^2 = −4 and (−2)^2 = 4. Use integer powers from −12 to 12; m² and m³ also work.</p>
+            <p><strong>Numbers:</strong> decimal point only; no commas or thousands separators. Scientific notation: 1.5e3 W. Results use up to 10 significant digits and scientific notation below 1e−6 or at/above 1e10. ≈ marks rounded display values, not measurement accuracy. Calculations retain browser number precision. Limits: 512 characters per field, 160 tokens and 24 nesting levels.</p>
+            <p><strong>Output:</strong> append “in km/h” or “to km/h”, or use the optional field. Supplying both is an error; clear one. Without a target, results use base SI units, without guessing whether N*m means torque or energy. Equal dimensions can cancel to a dimensionless result.</p>
+            <p><strong>Temperature:</strong> direct absolute conversions only, e.g. −40 °C in °F. All arithmetic with °C, °F or K is rejected; use deltaC, deltaF or deltaK for temperature differences. Pressure units represent magnitudes; no gauge/absolute offset is inferred. rpm includes 2π radians per revolution.</p>
+            <p><strong>Case matters:</strong> mW and MW differ. Use gal_US / gal_imp and tonne / ton_short / ton_long. cal and kcal are thermochemical; BTU is the international-table variant.</p>
+            <p><strong>Supported symbols:</strong> <span id="supported-units"></span>.</p>
+            <p><strong>Aliases (case-sensitive):</strong> <span id="supported-aliases"></span>. Use symbols for other units. Unit-only targets accept products, division and integer powers; target parentheses and numeric scale factors are unsupported.</p>
+          </div>
+        </details>
       </div>
       <div class="converter-foot"><span><span aria-hidden="true">⌘</span> A little less friction in your workflow.</span><span>SI & imperial, in harmony <span aria-hidden="true">↗</span></span></div>
     </section>
